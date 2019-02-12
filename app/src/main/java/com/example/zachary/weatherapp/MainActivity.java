@@ -17,6 +17,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -77,8 +78,8 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onMapReady(GoogleMap googleMap) {
                     map = googleMap;
-                    map.setMapType(2);
-                    map.animateCamera(CameraUpdateFactory.newLatLng(utAustin));
+                    map.setMapType(1);
+                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(utAustin, (float)14.5));
                     mapView.onResume();
                 }
             });
@@ -92,12 +93,21 @@ class Geocoding extends AsyncTask<String, Integer, String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         MapView mapView = context.findViewById(R.id.mapView);
+        mapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                map = googleMap;
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), (float)14.5));
+                map.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).title("Your Location"));
+            }
+        });
     }
 
     String url_str;
     Activity context;
     double lat;
     double lng;
+    GoogleMap map;
 
 
     public Geocoding(Activity ctxt){
