@@ -79,8 +79,7 @@ public class MainActivity extends AppCompatActivity {
                     map = googleMap;
                     map.setMapType(2);
                     map.animateCamera(CameraUpdateFactory.newLatLng(utAustin));
-                    System.out.println("animated camera");
-                    System.out.println(map.getMapType());
+                    mapView.onResume();
                 }
             });
         }
